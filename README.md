@@ -47,7 +47,7 @@ SELECT
 FROM
   `bigquery-public-data.london_fire_brigade.INFORMATION_SCHEMA.COLUMNS`;
 ```
-![Data type](SQL screenshots/data type (1).PNG)
+![Data type](SQL screenshots/data-type.PNG)
 
 ✅ All columns use the correct formats.
 
