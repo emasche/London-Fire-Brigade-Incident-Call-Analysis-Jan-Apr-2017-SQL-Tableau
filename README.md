@@ -47,8 +47,7 @@ SELECT
 FROM
   `bigquery-public-data.london_fire_brigade.INFORMATION_SCHEMA.COLUMNS`;
 ```
-![Data type](SQL screenshots/data-type.PNG)
-
+![Data type](SQL-screenshots/data-type1.PNG)
 ✅ All columns use the correct formats.
 
 ### 1.2 Checking for Null Values Using Dynamic SQL
