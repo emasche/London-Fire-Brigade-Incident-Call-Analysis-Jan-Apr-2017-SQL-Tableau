@@ -71,7 +71,7 @@ SELECT
 FROM `bigquery-public-data.london_fire_brigade.fire_brigade_service_calls`
 """, sql_query)
 ```
-
+![Nulls](SQL-screenshots/nulls2.PNG)
 special_service_type: 22,166 nulls
 
 easting_m, northing_m, postcode_full: 15,411 nulls
@@ -94,7 +94,7 @@ GROUP BY
 HAVING
   COUNT(*) > 1
 ```
-
+![Duplicates](SQL-screenshots/unique-values3.PNG)
 ✅ No duplicates found — incident_number is unique.
 
 ### 1.4 Validating Numeric Columns
@@ -106,6 +106,7 @@ SELECT
   COUNTIF(num_pumps_attending < 0) AS invalid_pump_count
 FROM `bigquery-public-data.london_fire_brigade.fire_brigade_service_calls`
 ```
+![Invalid](SQL-screenshots/invalid-values4.PNG)
 ✅ No negative values detected.
 
 ### 1.5 Check the time span covered by the dataset.
@@ -117,6 +118,7 @@ SELECT
 FROM
     `bigquery-public-data.london_fire_brigade.fire_brigade_service_calls`
 ```
+![Time span](SQL-screenshots/...)
 -- from 01/01/2017 to 30/04/2017
 
 ## 2. Incident Volume and Frequency (2017
