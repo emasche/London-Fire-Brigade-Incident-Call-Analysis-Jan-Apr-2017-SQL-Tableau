@@ -136,8 +136,8 @@ ORDER BY
 ```
 
 ### 2.2 Incidents per Month
-sql
-Copy code
+
+```sql
 SELECT
   DATE_TRUNC(date_of_call, MONTH) AS month,
   incident_group,
@@ -145,22 +145,24 @@ SELECT
 FROM
   `bigquery-public-data.london_fire_brigade.fire_brigade_service_calls`
 GROUP BY month, incident_group
-ORDER BY month, total DESC;
+ORDER BY month, total DESC
+```
 
 ### 2.3 Incidents by Weekday
-sql
-Copy code
+
+```sql
 SELECT
   FORMAT_DATE('%A', date_of_call) AS day_of_week,
   COUNT(*) AS total_incidents
 FROM
   `bigquery-public-data.london_fire_brigade.fire_brigade_service_calls`
 GROUP BY day_of_week
-ORDER BY total_incidents DESC;
+ORDER BY total_incidents DESC
+```
 
 ### 2.4 Busiest Times of Day
-sql
-Copy code
+
+```sql
 SELECT
   hour_of_call,
   COUNT(*) AS incident_count
@@ -169,8 +171,10 @@ FROM
 GROUP BY
   hour_of_call
 ORDER BY 
-  incident_count DESC;
-Observations:
+  incident_count DESC
+```
+
+Observations
 
 Peak: 18:00 (2,187 calls)
 
@@ -179,8 +183,8 @@ Low: 00:00 (485 calls)
 
 ## 3. Outlier Detection
 ### 3.1 Unusually Busy Hours
-sql
-Copy code
+
+```sql
 WITH hourly_count AS (
   SELECT
     EXTRACT(HOUR FROM time_of_call) AS hour_of_day,
@@ -202,13 +206,14 @@ FROM
   hourly_count, stats
 WHERE
   total_incidents > avg_incidents + 1.5 * std_dev
-ORDER BY total_incidents DESC;
+ORDER BY total_incidents DESC
+```
 
 📌 18:00 is a moderate outlier (+1.5 SD from mean).
 
 ### 3.2 Unusually Busy Days
-sql
-Copy code
+
+```sql
 WITH daily_count AS (
   SELECT 
     DATE(date_of_call) AS call_date,
@@ -230,7 +235,8 @@ FROM
   daily_count, stats
 WHERE
   total_incidents > avg_incidents + 3 * std_dev
-ORDER BY total_incidents DESC;
+ORDER BY total_incidents DESC
+```
 
 📌 Feb 23, 2017 had 525 incidents due to Storm Doris (extreme weather event).
 
@@ -238,6 +244,7 @@ ORDER BY total_incidents DESC;
 
 ### 4.1 Incidents by Boroughs
 
+``` sql
 SELECT
       borough_name,COUNT(*) AS total_incidents
 FROM
@@ -246,12 +253,14 @@ GROUP BY
     borough_name
 ORDER BY
     total_incidents DESC
+```
 
 -- WESTMINSTER  (2469) > CITY OF LONDON (367)
 
  
 ### 4.2 Incident types by borough
 
+``` sql
 SELECT
   incident_group, 
   borough_name,
@@ -263,9 +272,11 @@ GROUP BY
   borough_name
 ORDER BY 
   borough_name
+```
 
 ### 4.3 Incident calls volume by area by months
 
+```sql
 SELECT
       borough_name,
       FORMAT_DATE('%B', DATE_TRUNC(date_of_call, MONTH)) AS Month,
@@ -276,12 +287,13 @@ GROUP BY
      borough_name, Month 
 ORDER BY
       borough_name
-
+```
 
 ## First Pump
 
 ### 5.1 Average Response Time by Borough
 
+```sql
 SELECT
   borough_name,
   ROUND(AVG(first_pump_arriving_attendance_time),2) AS avg_first_pump_time
@@ -293,12 +305,14 @@ GROUP BY
     borough_name
 ORDER BY
     avg_first_pump_time 
+```
 
 quicker to arrive: Kensingston and Chelsea (265s or 4.4min), slower: (373s or 6.2min)
 
 
 ### 5.2 How many calls by borough resulted in help arriving 15min or more at location 
 
+```sql
 SELECT
 borough_name,
 COUNT(*) AS total_pump_15min
@@ -309,11 +323,13 @@ first_pump_arriving_attendance_time> 900
 GROUP BY
 borough_name
 ORDER BY
- total_pump_15min DESC;
+ total_pump_15min DESC
+```
 
 
 ### 5.3 Number of first pump sent by station
 
+```sql
 SELECT
       first_pump_arriving_deployed_from_station,
       COUNT(*) as number_first_pump_sent
@@ -325,10 +341,11 @@ GROUP BY
       first_pump_arriving_deployed_from_station
 ORDER BY
       number_first_pump_sent DESC
-
+```
 
 ### 5.4 How long in average do each station take to deploy first pump
 
+```sql
 SELECT
 first_pump_arriving_deployed_from_station,
 COUNT(*) AS number_pump_sent_from_station,
@@ -342,15 +359,16 @@ GROUP BY
 first_pump_arriving_deployed_from_station
 ORDER BY
 avg_attendance_time
-
-
---Quicker Battersea, Slower Staines then Ruislip (but only one intervention in Staines)
+```
+Quicker Battersea, Slower Staines then Ruislip (but only one intervention in Staines)
 
 
 ### 5.5 Identifying Outliers in First Pump Response Times
 
 Multiplying the standard deviation by 3 (±3σ) helps identify outliers by flagging values that fall outside the typical 99.7% range of a normally distributed dataset.
 WITH response_stats AS (
+
+```sql
 SELECT 
 AVG(first_pump_arriving_attendance_time) AS avg_time,
 STDDEV(first_pump_arriving_attendance_time) AS std_dev
@@ -370,13 +388,14 @@ WHERE
 first_pump_arriving_attendance_time > avg_time + 3 * std_dev
 OR first_pump_arriving_attendance_time < avg_time - 3 * std_dev
 ORDER BY 
-first_pump_arriving_attendance_time DESC;
+first_pump_arriving_attendance_time DESC
+```
 
- 
 ## Second pump
 
 ### 6.1 Which stations most often respond as the second pump?
 
+```sql
 SELECT 
 second_pump_arriving_deployed_from_station AS station,
 COUNT(*)AS number_of_times_responded
@@ -388,10 +407,11 @@ GROUP BY
 station
 ORDER BY 
 number_of_times_responded DESC
+```
 
- 
 ### 6.2 Which station send more help to other station for the second pump
 
+```sql
 SELECT 
   second_pump_arriving_deployed_from_station AS helper_station,
   COUNT(*) AS times_helped_other_station
@@ -405,11 +425,13 @@ GROUP BY
   helper_station
 ORDER BY
   times_helped_other_station DESC
+```
 
--- Biggest help: Fulham, Hammersmith, Chealsea
+Biggest help: Fulham, Hammersmith, Chealsea
 
 ### 6.3 Second pump arriving quicker than first pump on incident
 
+```sql
 SELECT
       second_pump_arriving_deployed_from_station,
       COUNT(*) AS total_second_pump_quicker_than_first_pump
@@ -421,10 +443,11 @@ GROUP BY
       second_pump_arriving_deployed_from_station
 ORDER BY
       total_second_pump_quicker_than_first_pump DESC
-
+```
 
 ### 6.4 Count of second pump dispatched from same station as first pump
 
+```sql
 SELECT
       second_pump_arriving_deployed_from_station,
       COUNT(*) AS total_second_pump_same_as_first_pump
@@ -436,12 +459,13 @@ GROUP BY
       second_pump_arriving_deployed_from_station
 ORDER BY
       total_second_pump_same_as_first_pump DESC
-
+```
 
 ## Incident Types and Property Insights
 
 ### 7.1 Incidents by Type by property category
 
+```sql
 SELECT
   incident_group, COUNT(*) AS total_incidents
 FROM
@@ -450,12 +474,13 @@ GROUP BY
   incident_group
 ORDER BY
   total_incidents DESC
+```
 
--- False alarms (15732), Special services (10081), Fires (6434) 
+False alarms (15732), Special services (10081), Fires (6434) 
 
- 
 ### 7.2  Incidents by property types 
 
+```sql
 SELECT
   property_type, COUNT(*) AS total_incidents
 FROM
@@ -465,11 +490,13 @@ GROUP BY
 ORDER BY
   total_incidents DESC
 LIMIT 10
-
+```
  
-  ---Flats/Maisonettes 4 to 9 storeys (3823)> House-single occupancy (3784)
+Flats/Maisonettes 4 to 9 storeys (3823)> House-single occupancy (3784)
 
 ### 7.3 Top property type involved in Incidents by borough
+
+```sql
 SELECT
   property_type, 
   borough_name,
@@ -482,12 +509,13 @@ GROUP BY
       borough_name, property_type
 ORDER BY
       Incidents DESC 
-
+```
 
 ## Holidays/ Weekdays/ Weekends
 
 ### 8.1 Are there spikes in incidents tied to seasons or holidays?
 
+```sql
 CREATE TABLE calm-nation-467010-r3.london_data.daily_count AS (
 SELECT
   DATE(date_of_call) AS Date,
@@ -519,12 +547,13 @@ GROUP BY
   day_type
 ORDER BY
   day_type
-
--- Holidays (51.7%), Non-Holidays(48.3%)
+```
+Holidays (51.7%), Non-Holidays(48.3%)
 
 
 ### 8.2 Average Daily incident calls compared to Overall Average Holidays vs Non-Holidays(in %)
 
+```sql
 -- AVG per day_type
 WITH
 avg_by_type AS(
@@ -551,12 +580,11 @@ SELECT
   ROUND(a.avg_daily_incidents/o.avg_all_days*100, 2) AS pct_of_overall
   FROM avg_by_type a
   CROSS JOIN overall_average o
-
-
- 
+```
 
 ### 8.3 Holidays vs Non-Holidays breakdown
 
+```sql
 SELECT
   day_type,
   date_of_call,
@@ -571,10 +599,11 @@ GROUP BY
   date_of_call, day_type
 ORDER BY
   date_of_call
-
+```
  
 ### 8.4 Incident type by day type
 
+```sql
 CREATE TABLE `calm-nation-467010-r3.london_data.day_type` AS
 SELECT
   incident_group,
@@ -599,11 +628,11 @@ FROM
   FROM daily_count
   GROUP BY day_type, incident_group
   ORDER BY day_type, total_incidents DESC
-
+```
  
-
 ### 8.5 Incident calls during weekday by borough
 
+```sql
 SELECT
   borough_name, 
   day_type,
@@ -616,11 +645,11 @@ GROUP BY
   borough_name, day_type
 ORDER BY
   total_incidents_by_borough DESC
-
+```
  
-
 ### 8.6 Incident calls during weekends by borough
 
+```sql
 SELECT
   borough_name, 
   day_type,
@@ -633,11 +662,11 @@ GROUP BY
   borough_name, day_type
 ORDER BY
   total_incidents_by_borough DESC
-
+```
  
-
 ### 8.7 Incident calls during holidays by borough
 
+```sql
 SELECT
   borough_name, 
   day_type,
@@ -650,4 +679,4 @@ GROUP BY
   borough_name, day_type
 ORDER BY
   total_incidents_by_borough DESC
-	
+	```
