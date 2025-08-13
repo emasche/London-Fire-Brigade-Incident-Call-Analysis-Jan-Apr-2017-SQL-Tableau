@@ -47,6 +47,7 @@ SELECT
 FROM
   `bigquery-public-data.london_fire_brigade.INFORMATION_SCHEMA.COLUMNS`;
 ```
+https://github.com/emasche/London-Fire-Brigade-Incident-Call-Analysis-Jan-Apr-2017-SQL-Tableau/blob/main/SQL%20screenshots/data%20type%20(1).PNG
 
 ✅ All columns use the correct formats.
 
