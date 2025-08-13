@@ -46,14 +46,14 @@ SELECT
   data_type
 FROM
   `bigquery-public-data.london_fire_brigade.INFORMATION_SCHEMA.COLUMNS`;
+```
 
 ✅ All columns use the correct formats.
 
 ### 1.2 Checking for Null Values Using Dynamic SQL
 Instead of manually counting NULLs per column, dynamic SQL generates COUNTIF statements for all 34 fields.
 
-sql
-Copy code
+```sql
 DECLARE sql_query STRING;
 
 SET sql_query = (
@@ -69,8 +69,8 @@ SELECT
   COUNT(*) AS total_rows,
   %s
 FROM `bigquery-public-data.london_fire_brigade.fire_brigade_service_calls`
-""", sql_query);
-Findings:
+""", sql_query)
+```
 
 special_service_type: 22,166 nulls
 
@@ -83,8 +83,7 @@ second_pump_arriving_* fields: 20,281 nulls
 Key temporal and geographic identifiers: 0 nulls ✅
 
 ### 1.3 Checking for Duplicate Records
-sql
-Copy code
+```sql
 SELECT
   incident_number,
   COUNT(*) AS count
@@ -93,37 +92,38 @@ FROM
 GROUP BY
   incident_number
 HAVING
-  COUNT(*) > 1;
+  COUNT(*) > 1
+```
 
 ✅ No duplicates found — incident_number is unique.
 
 ### 1.4 Validating Numeric Columns
-sql
-Copy code
+```sql
 SELECT 
   COUNTIF(first_pump_arriving_attendance_time < 0) AS invalid_first_pump_time,
   COUNTIF(second_pump_arriving_attendance_time < 0) AS invalid_second_pump_time,
   COUNTIF(num_stations_with_pumps_attending < 0) AS invalid_station_count,
   COUNTIF(num_pumps_attending < 0) AS invalid_pump_count
-FROM `bigquery-public-data.london_fire_brigade.fire_brigade_service_calls`;
+FROM `bigquery-public-data.london_fire_brigade.fire_brigade_service_calls`
+```
 ✅ No negative values detected.
 
 ### 1.5 Check the time span covered by the dataset.
 
+```sql
 SELECT
   MIN(DATE(date_of_call)) AS start_date,
   MAX(DATE(date_of_call)) AS end_date
 FROM
-    `bigquery-public-data.london_fire_brigade.fire_brigade_service_calls`;
-
+    `bigquery-public-data.london_fire_brigade.fire_brigade_service_calls`
+```
 -- from 01/01/2017 to 30/04/2017
 
 ## 2. Incident Volume and Frequency (2017
 
 ### 2.1 Total Incidents by Type
 
-sql
-Copy code
+```sql
 SELECT
   incident_group,
   COUNT(*) AS group_category
@@ -132,7 +132,8 @@ FROM
 GROUP BY
   incident_group
 ORDER BY
-  group_category;
+  group_category
+```
 
 ### 2.2 Incidents per Month
 sql
