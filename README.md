@@ -134,7 +134,7 @@ SELECT
 FROM
     `bigquery-public-data.london_fire_brigade.fire_brigade_service_calls`
 ```
-![Time span](SQL-screenshots/SQL-screenshots/date-span.PNG)
+![Time span](SQL-screenshots/date-span.PNG)
 
 The dataset spans from 01/01/2017 to 30/04/2017, covering a four-month period.
 
