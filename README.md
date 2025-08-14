@@ -121,7 +121,7 @@ FROM
 ![Time span](SQL-screenshots/...)
 -- from 01/01/2017 to 30/04/2017
 
-## 2. Incident Volume and Frequency (2017
+## 2. Incident Volume and Frequency 
 
 ### 2.1 Total Incidents by Type
 
@@ -136,6 +136,7 @@ GROUP BY
 ORDER BY
   group_category
 ```
+![Incident by type](SQL-screenshots/incident-number-by-type5.PNG)
 
 ### 2.2 Incidents per Month
 
@@ -149,6 +150,7 @@ FROM
 GROUP BY month, incident_group
 ORDER BY month, total DESC
 ```
+![Incident per month](SQL-screenshots/incident-group-by-month6.PNG)
 
 ### 2.3 Incidents by Weekday
 
@@ -161,6 +163,8 @@ FROM
 GROUP BY day_of_week
 ORDER BY total_incidents DESC
 ```
+
+![Incident by weekday](SQL-screenshots/incidents-by-weekday7.PNG)
 
 ### 2.4 Busiest Times of Day
 
@@ -175,11 +179,9 @@ GROUP BY
 ORDER BY 
   incident_count DESC
 ```
-
-Observations
+![Incidents by hour](SQL-screenshots/incidents-by-hour8.PNG)
 
 Peak: 18:00 (2,187 calls)
-
 Low: 00:00 (485 calls)
 
 
@@ -210,7 +212,7 @@ WHERE
   total_incidents > avg_incidents + 1.5 * std_dev
 ORDER BY total_incidents DESC
 ```
-
+![Outliers hour](SQL-screenshots/outlier-hour.PNG)
 📌 18:00 is a moderate outlier (+1.5 SD from mean).
 
 ### 3.2 Unusually Busy Days
@@ -239,7 +241,7 @@ WHERE
   total_incidents > avg_incidents + 3 * std_dev
 ORDER BY total_incidents DESC
 ```
-
+![Outlier day](SQL-screenshots/oulier-days-23rd-feb.PNG)
 📌 Feb 23, 2017 had 525 incidents due to Storm Doris (extreme weather event).
 
 ## Geographical Distribution
@@ -256,8 +258,8 @@ GROUP BY
 ORDER BY
     total_incidents DESC
 ```
-
--- WESTMINSTER  (2469) > CITY OF LONDON (367)
+![Incidents by boroughs](SQL-screenshots/incident-group-by-borough9.PNG)
+WESTMINSTER  (2469) > CITY OF LONDON (367)
 
  
 ### 4.2 Incident types by borough
@@ -275,8 +277,9 @@ GROUP BY
 ORDER BY 
   borough_name
 ```
+![Incident types by borough](SQL-screenshots/total-incidents-by-borough10.PNG)
 
-### 4.3 Incident calls volume by area by months
+### 4.3 Incident calls volume by borough by months
 
 ```sql
 SELECT
@@ -290,6 +293,7 @@ GROUP BY
 ORDER BY
       borough_name
 ```
+![Monthly incidents by borough](SQL-screenshots/Monthly-incidents-by-borough11.PNG)
 
 ## First Pump
 
@@ -308,6 +312,7 @@ GROUP BY
 ORDER BY
     avg_first_pump_time 
 ```
+![Avg response time by borough](SQL-screenshots/avg-first-pump-time-by-borough12.PNG)
 
 quicker to arrive: Kensingston and Chelsea (265s or 4.4min), slower: (373s or 6.2min)
 
@@ -327,7 +332,7 @@ borough_name
 ORDER BY
  total_pump_15min DESC
 ```
-
+![help more than 15min](SQL-screenshots/first-pump-more-15min-by-borough13.PNG)
 
 ### 5.3 Number of first pump sent by station
 
@@ -344,6 +349,7 @@ GROUP BY
 ORDER BY
       number_first_pump_sent DESC
 ```
+![First pump by station](SQL-screenshots/number-first-pump-sent-by-station14.PNG)
 
 ### 5.4 How long in average do each station take to deploy first pump
 
@@ -362,6 +368,7 @@ first_pump_arriving_deployed_from_station
 ORDER BY
 avg_attendance_time
 ```
+![Avg first pump attendance time by station](SQL-screenshots/avg-time-first-pump-by-station15.png)
 Quicker Battersea, Slower Staines then Ruislip (but only one intervention in Staines)
 
 
@@ -392,7 +399,7 @@ OR first_pump_arriving_attendance_time < avg_time - 3 * std_dev
 ORDER BY 
 first_pump_arriving_attendance_time DESC
 ```
-
+![Outliers response time](SQL-screenshots/outliers-first-pump.PNG)
 ## Second pump
 
 ### 6.1 Which stations most often respond as the second pump?
@@ -410,6 +417,7 @@ station
 ORDER BY 
 number_of_times_responded DESC
 ```
+![Second pump by station](SQL-screenshots/second-pump-by-station16.PNG)
 
 ### 6.2 Which station send more help to other station for the second pump
 
@@ -428,6 +436,7 @@ GROUP BY
 ORDER BY
   times_helped_other_station DESC
 ```
+![Second pump sent to other station](SQL-screenshots/snd-pump-to-diff-station17.PNG)
 
 Biggest help: Fulham, Hammersmith, Chealsea
 
@@ -446,6 +455,7 @@ GROUP BY
 ORDER BY
       total_second_pump_quicker_than_first_pump DESC
 ```
+![Second pump quicker than first by station](SQL-screenshots/snd-pump-same-first-pump18.PNG)
 
 ### 6.4 Count of second pump dispatched from same station as first pump
 
@@ -462,10 +472,11 @@ GROUP BY
 ORDER BY
       total_second_pump_same_as_first_pump DESC
 ```
+![first and second pump fro same station](SQL-screenshots/snd-pump-same-first-pump18.PNG)
 
 ## Incident Types and Property Insights
 
-### 7.1 Incidents by Type by property category
+### 7.1 Incidents Types by property category
 
 ```sql
 SELECT
@@ -477,10 +488,10 @@ GROUP BY
 ORDER BY
   total_incidents DESC
 ```
-
+![Incident types by property category](SQL-screenshots/incident-group-by-property-cat-19.PNG)
 False alarms (15732), Special services (10081), Fires (6434) 
 
-### 7.2  Incidents by property types 
+### 7.2  Incidents by property type
 
 ```sql
 SELECT
@@ -493,7 +504,7 @@ ORDER BY
   total_incidents DESC
 LIMIT 10
 ```
- 
+ ![Incidents by property type](SQL-screenshots/incidents-by-property-type20.PNG)
 Flats/Maisonettes 4 to 9 storeys (3823)> House-single occupancy (3784)
 
 ### 7.3 Top property type involved in Incidents by borough
@@ -512,6 +523,7 @@ GROUP BY
 ORDER BY
       Incidents DESC 
 ```
+![Property type involved in incidents by borough](SQL-screenshots/incident-by-property-type-by-borough21.PNG)
 
 ## Holidays/ Weekdays/ Weekends
 
@@ -550,6 +562,7 @@ GROUP BY
 ORDER BY
   day_type
 ```
+![Holidays vs non holidays](SQL-screenshots/pct-incidents-hol-non-hol22.PNG)
 Holidays (51.7%), Non-Holidays(48.3%)
 
 
@@ -583,7 +596,7 @@ SELECT
   FROM avg_by_type a
   CROSS JOIN overall_average o
 ```
-
+![Avg call holidays/non-holidays compare to daily mean](SQL-screenshots/avg-holidays-incidents-by-daily-average23.PNG)
 ### 8.3 Holidays vs Non-Holidays breakdown
 
 ```sql
@@ -602,7 +615,7 @@ GROUP BY
 ORDER BY
   date_of_call
 ```
- 
+ ![Holidays/Non Holidays daily breakdown](SQL-screenshots/daily-total-incident-hol-non-hol24.PNG)
 ### 8.4 Incident type by day type
 
 ```sql
@@ -631,6 +644,7 @@ FROM
   GROUP BY day_type, incident_group
   ORDER BY day_type, total_incidents DESC
 ```
+ ![Incident type by day type](SQL-screenshots/incident-group-by day-type-25.PNG)
  
 ### 8.5 Incident calls during weekday by borough
 
@@ -648,6 +662,7 @@ GROUP BY
 ORDER BY
   total_incidents_by_borough DESC
 ```
+![Calls by borough during weekdays](SQL-screenshots/incidents-type-by-borough-weekdays26.PNG)
  
 ### 8.6 Incident calls during weekends by borough
 
@@ -665,7 +680,7 @@ GROUP BY
 ORDER BY
   total_incidents_by_borough DESC
 ```
- 
+ ![Calls by borough during weekends](SQL-screenshots/incident-type-by-borough-Weekends27.PNG)
 ### 8.7 Incident calls during holidays by borough
 
 ```sql
@@ -682,3 +697,4 @@ GROUP BY
 ORDER BY
   total_incidents_by_borough DESC
 	```
+![Calls by borough during Holidays](SQL-screenshots/incident-types-by-borough-Holidays28.PNG)
