@@ -352,7 +352,7 @@ ORDER BY
 
 The results indicates that The City of London has the highest percentage of false alarm calls (79%), Lambeth has the highest percentage of Special service-related calls (44%), and Barking and Daghennam has the highest percentage of Fire-related calls (30%).
 
-### 4.3 Incident calls volume by borough by months
+### 4.4 Incident calls volume by borough by months
 
 To detect temporal trends within each borough, the following query aggregates monthly incident counts.
 
@@ -369,6 +369,8 @@ ORDER BY
       borough_name
 ```
 ![Monthly incidents by borough](SQL-screenshots/Monthly-incidents-by-borough11.PNG)
+
+Tower Hamlets recorded the largest month-to-month increase, rising by 79 calls from March (286) to April (365). Southwark experienced the steepest month-to-month decline, dropping by 64 calls from January (389) to February (325). Greenwich showed a consistent increase in call volumes from January through April. Kensington and Chelsea displayed a consistent decrease in call volumes across the same period.
 
 ## First Pump
 
@@ -391,10 +393,11 @@ ORDER BY
 ```
 ![Avg response time by borough](SQL-screenshots/avg-first-pump-time-by-borough12.PNG)
 
-The quickest borough was Kensington and Chelsea (265s ≈ 4.4 min), while the slowest averaged 373s (≈ 6.2 min).
-
+The borough with the quickest average time to deploy the first pump was Kensington and Chelsea (265 s ≈ 4.4 min), while the slowest was Hillingdon, averaging 373 s (≈ 6.2 min).
 
 ### 5.2 How many calls by borough resulted in help arriving 15min or more at location 
+
+The following analysis examines the number of calls by borough in which help arrived at the scene 15 minutes or more after the initial call, as longer response times can significantly impact incident outcomes and public safety.
 
 ```sql
 SELECT
@@ -411,7 +414,28 @@ ORDER BY
 ```
 ![help more than 15min](SQL-screenshots/first-pump-more-15min-by-borough13.PNG)
 
-### 5.3 Number of first pump sent by station
+Ealing has been the borough that sent the most pump 15min or later after the initial call (17), followed by Westminster (13) and Hillingdon (12).
+
+### 5.3 Percentage of pump arriving 15min after initial call by borough
+
+```sql
+SELECT
+  borough_name,
+  COUNTIF(first_pump_arriving_attendance_time > 900) AS late_calls,
+  COUNT(*) AS total_calls,
+  ROUND(COUNTIF(first_pump_arriving_attendance_time > 900) * 100.0 / COUNT(*), 2) AS percentage
+FROM
+  `bigquery-public-data.london_fire_brigade.fire_brigade_service_calls`
+GROUP BY
+  borough_name
+ORDER BY 
+   percentage DESC
+```
+![Percentage 15min late by borough](SQL-screenshots/percentage_15minlate.PNG)
+
+The results show that Ealing (1.61%) and Hillingdon (1.17%) are amoung the boroughs that send the highest proportion of pump late, relative to the total number of first pumps they dispatch. However, the results also indicate that the percentage of first pumps sent 15minutes or more after the initial call in Westminster borough is only 0.53%, placing it 16th out of 34 boroughs, despite being the busiest borough overall.
+
+### 5.4 Number of first pump sent by station
 
 ```sql
 SELECT
@@ -428,7 +452,9 @@ ORDER BY
 ```
 ![First pump by station](SQL-screenshots/number-first-pump-sent-by-station14.PNG)
 
-### 5.4 How long in average do each station take to deploy first pump
+The results indicates that Soho station dispatched the most first pumps (1,205), followed by Lambeth (641) and Paddington (625). The stations that dispatched the fewest first pumps during the period January-April 2017 are Lambeth (1 pump) and Biggin Hill (33).
+
+### 5.5 How long in average do each station take to deploy first pump
 
 ```sql
 SELECT
@@ -445,10 +471,10 @@ first_pump_arriving_deployed_from_station
 ORDER BY
 avg_attendance_time
 ```
+
 ![Avg first pump attendance time by station](SQL-screenshots/avg-time-first-pump-by-station15.png)
 
-Battersea had the quickest average response (), while Staines was the slowest() — although Staines had only one recorded intervention in the dataset.
-
+Battersea had the quickest average response time (263 s ≈ 4.38 min), followed by Lewisham (264 s ≈ 4.4 min), while Staines was the slowest (728 s ≈ 12.13 min) — although Staines had only one recorded intervention in the dataset.
 
 ### 5.5 Identifying Outliers in First Pump Response Times
 
@@ -478,6 +504,8 @@ ORDER BY
 first_pump_arriving_attendance_time DESC
 ```
 ![Outliers response time](SQL-screenshots/outliers-first-pump.PNG)
+
+The analysis identified 493 calls out 32,247 of in which the first pump’s response time was unusually high or low, exceeding three standard deviations from the overall average.
 
 ## Second pump
 
