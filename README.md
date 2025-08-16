@@ -528,6 +528,8 @@ number_of_times_responded DESC
 ```
 ![Second pump by station](SQL-screenshots/second-pump-by-station16.PNG)
 
+The results indicate that the stations that sent the most total second pumps were Soho (375), Hammersmith (342) and Paddington (333). The stations that dispatched the fewest total second pumps were Biggin Hill (8), Wennington (12) and Purley (18).
+
 ### 6.2 Which station send more help to other station for the second pump
 
 The following analysis measured cross-station support, identifying the stations most frequently providing a second pump to assist incidents where the first pump originated elsewhere:
@@ -549,7 +551,7 @@ ORDER BY
 ```
 ![Second pump sent to other station](SQL-screenshots/snd-pump-to-diff-station17.PNG)
 
-Stations providing the most assistance included Fulham (), Hammersmith(), and Chelsea().
+Stations providing the most assistance included Fulham (156), Hammersmith (154), and Soho (153). 
 
 ### 6.3 Second pump arriving quicker than first pump on incident
 
@@ -570,6 +572,8 @@ ORDER BY
 ```
 ![Second pump quicker than first by station](SQL-screenshots/snd-pump-same-first-pump18.PNG)
 
+The results highlight that Soho was the fastest to send a second pump ahead of the first pump from another station on 7 occasions, followed by Paddington, which did so 4 times.
+
 ### 6.4 Count of second pump dispatched from same station as first pump
 
 This query measured the frequency of both pumps being dispatched from the same station:
@@ -587,7 +591,9 @@ GROUP BY
 ORDER BY
       total_second_pump_same_as_first_pump DESC
 ```
-![first and second pump fro same station](SQL-screenshots/snd-pump-same-first-pump18.PNG)
+![first and second pump fro same station](SQL-screenshots/scnd_pump_same_first.PNG)
+
+The results indicate that the highest numbers of second pumps arriving at the incident scenes before the first pumps were dispatched from Paddington (236), Soho (222) and North Kensington (195).
 
 ## Incident Types and Property Insights
 
@@ -647,6 +653,8 @@ ORDER BY
       Incidents DESC 
 ```
 ![Property type involved in incidents by borough](SQL-screenshots/incident-by-property-type-by-borough21.PNG)
+
+The results indicate that purpose-built offices were the property type most frequently involved in incidents in the City of London. In central London, purpose-built flats/maisonettes (4–9 storeys) accounted for the majority of incidents, except in Kensington and Chelsea where converted flats/maisonettes (3 or more storeys) dominated. Outside central London, single-occupancy houses were the most affected, with the exception of Brent, where the leading property type was purpose-built flats/maisonettes (up to 3 storeys).
 
 ## Holidays/ Weekdays/ Weekends
 
