@@ -701,7 +701,7 @@ Analysis shows that holidays account for 51.7% of total incidents, while non-hol
 
 ### 8.2 Average Daily incident calls compared to Overall Average Holidays vs Non-Holidays(in %)
 
-The following analysis compares the average number of daily incidents on holidays and non-holidays to the overall daily average, expressed as a percentage.
+The following analysis compares the average number of daily incidents on holidays and non-holidays to the overall daily average, expressed as a percentage, in order to identify whether holidays significantly influence demand and require different resource planning.
 
 ```sql
 -- AVG per day_type
@@ -733,9 +733,13 @@ SELECT
 ```
 ![Avg call holidays/non-holidays compare to daily mean](SQL-screenshots/avg-holidays-incidents-by-daily-average23.PNG)
 
+The results indicate that the overall daily incident average is 269 calls.
+On non-holidays, the average daily number of incidents was slightly below this benchmark, at 99% of the overall mean. On holidays, the average daily number of incidents was higher, reaching 106% of the overall mean.
+This suggests that incident frequency tends to increase during holidays compared to regular days, which may be linked to changes in social activities, gatherings, and mobility patterns.
+
 ### 8.3 Holidays vs Non-Holidays breakdown
 
-The daily total number of incidents has been analysed to compare incidents on holidays versus non-holidays across the year.
+The daily total number of incidents has been detailed to compare incidents on holidays versus non-holidays across the year.
 
 ```sql
 SELECT
@@ -754,10 +758,12 @@ ORDER BY
   date_of_call
 ```
  ![Holidays/Non Holidays daily breakdown](SQL-screenshots/daily-total-incident-hol-non-hol24.PNG)
+
+ The results indicate that April holidays recorded the highest number of incidents, driven mainly by an increase in Special services and Fire-related calls. 
  
 ### 8.4 Incident type by day type
 
-The data has been analysed to determine how different types of incidents are distributed across weekdays, weekends, and holidays.
+The data has been analysed to determine how different types of incidents are distributed across weekdays, weekends, and holidays. This helps identify when incidents are most likely to happen, so resources and preventive measures can be better planned.
 
 ```sql
 CREATE TABLE `calm-nation-467010-r3.london_data.day_type` AS
@@ -785,7 +791,7 @@ FROM
   GROUP BY day_type, incident_group
   ORDER BY day_type, total_incidents DESC
 ```
- ![Incident type by day type](SQL-screenshots/incident-group-by day-type-25.PNG)
+ ![Incident type by day type](SQL-screenshots/incident-group-by-day-type-25.PNG)
  
 ### 8.5 Incident calls during weekday by borough
 
