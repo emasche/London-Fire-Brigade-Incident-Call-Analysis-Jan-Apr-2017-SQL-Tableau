@@ -566,7 +566,7 @@ GROUP BY
 ORDER BY
       total_second_pump_quicker_than_first_pump DESC
 ```
-![Second pump quicker than first by station](SQL-screenshots/snd-pump-same-first-pump18.PNG)
+![Second pump quicker than first by station](SQL-screenshots/snd-pump-quicker-first-pump18.PNG)
 
 The results highlight that Soho was the fastest to send a second pump ahead of the first pump from another station on 7 occasions, followed by Paddington, which did so 4 times.
 
