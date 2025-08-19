@@ -6,10 +6,6 @@ This project explores emergency incident call data from the **London Fire Brigad
 - **SQL** (BigQuery)
 - **Tableau Public** for visualisation
 
-## 📁 Files Included
-- `London_Fire_Brigade_Dashboard.twbx` – Tableau Packaged Workbook
-- `query.sql` – SQL query used to extract and analyze the data 
-
 ## 📊 Key Insights
 - Emergency call trends over time
 - response patterns
