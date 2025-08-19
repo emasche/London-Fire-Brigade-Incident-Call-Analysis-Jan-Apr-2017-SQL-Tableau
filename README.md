@@ -860,7 +860,7 @@ ORDER BY
 
 ![Calls by borough during Holidays](SQL-screenshots/incident-types-by-borough-Holidays28.PNG)
 
-During holidays, Westminster remains the borough that reported the most calls (465), followed by Camden (278) and Southwark (254). The boroughs that reported the fewest calls were Harrow (100) and Kingston upon Thames.
+During holidays, Westminster remains the borough that reported the most calls (465), followed by Camden (278) and Southwark (254). The boroughs that reported the fewest calls were Harrow (100) and Kingston upon Thames (101).
 
 # Conclusion
 
