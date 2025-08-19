@@ -1,4 +1,4 @@
-# 🔥 London Fire Brigade Incident Call Analysis (Jan–Apr 2017)
+#  London Fire Brigade Incident Call Analysis (Jan–Apr 2017)
 
 This project explores emergency incident call data from the **London Fire Brigade**, using a public dataset hosted on **Google BigQuery**.
 
