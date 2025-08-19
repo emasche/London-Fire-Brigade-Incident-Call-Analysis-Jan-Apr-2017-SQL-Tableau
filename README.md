@@ -144,7 +144,7 @@ Incident call records were aggregated and grouped to identify trends in volume a
 
 ### 2.1 Total Incidents by Type
 
-"Incidents were grouped by incident_group to quantify the frequency of each category. The dataset included three incident groups: False Alarm, Fire, and Special Services. Special Services encompass non-fire emergencies such as rescues, hazardous material incidents, assistance to other agencies, and various public safety support activities."
+Incidents were grouped by incident_group to quantify the frequency of each category. The dataset included three incident groups: False Alarm, Fire, and Special Services. Special Services encompass non-fire emergencies such as rescues, hazardous material incidents, assistance to other agencies, and various public safety support activities.
 
 ```sql
 SELECT
@@ -215,7 +215,7 @@ ORDER BY
 ![Incidents by hour](SQL-screenshots/incidents-by-hour8.PNG)
 
 Results indicate a peak activity time occuring at 18:00 (2,187 calls)
-and a lowest activity time occuring at 00:00 (485 calls)
+and a lowest activity time occuring at 00:00 (485 calls).
 
 ## 3. Outlier Detection
 
@@ -792,6 +792,8 @@ FROM
   ORDER BY day_type, total_incidents DESC
 ```
  ![Incident type by day type](SQL-screenshots/incident-group-by-day-type-25.PNG)
+
+The results indicate that false alarm-related calls are more frequent on weekdays compared to weekends and holidays. The findings also show that the differences between types of incidents are narrower during holidays than during weekdays and weekends.
  
 ### 8.5 Incident calls during weekday by borough
 
@@ -812,7 +814,9 @@ ORDER BY
   total_incidents_by_borough DESC
 ```
 ![Calls by borough during weekdays](SQL-screenshots/incidents-type-by-borough-weekdays26.PNG)
- 
+
+The results highlight that Westminster is the borough that reported the most incident calls during weekends by far with a total of 1,432 calls, followed by Camden (850), Southwark (832) and Lambeth (755), Tower Hamlets (712) and Croydon (673). City of London (202) and Kingston upon Thames (266) are the boroughs that made the fewest calls.
+
 ### 8.6 Incident calls during weekends by borough
 
 Next, the borough-level incident data has been examined to determine which areas experience the highest number of fire service calls during weekends.
@@ -832,6 +836,8 @@ ORDER BY
   total_incidents_by_borough DESC
 ```
  ![Calls by borough during weekends](SQL-screenshots/incident-type-by-borough-Weekends27.PNG)
+
+Similar to the weekday results, Westminster is the borough that reported the most incident calls during weekends by far, with a total of 573 calls, followed by Lambeth (379), Camden (372), Tower Hamlets (367), Southwark (349) and Hackney (321). City of London (79) and Richmond upon Thames (122) are the boroughs that reported the fewest calls.
  
 ### 8.7 Incident calls during holidays by borough
 
@@ -852,3 +858,52 @@ ORDER BY
   total_incidents_by_borough DESC
 	```
 ![Calls by borough during Holidays](SQL-screenshots/incident-types-by-borough-Holidays28.PNG)
+
+During holidays, Westminster remains the borough that reported the most calls (465), followed by Camden (278) and Southwark (254). The boroughs that reported the fewest calls were Harrow (100) and Kingston upon Thames.
+
+# Conclusion
+
+The analysis of incident call data from January to April 2017 reveals several key operational and strategic insights for emergency response management across London boroughs:
+
+## Incident Volume Patterns
+
+False alarms dominate call types, representing the highest proportion of incidents each month (15,732 calls), followed by Special Services (10,081) and Fires (6,434).
+
+Incident calls peak during weekends and holidays, particularly on Sundays and during holiday periods, indicating a need for targeted resource allocation during these high-demand times.
+
+Daily incident averages show minor variation between holidays and non-holidays, but holidays consistently exceed the mean, particularly in April, driven by Special Services and Fire calls.
+
+## Borough-Specific Insights
+
+Westminster consistently reports the highest number of incident calls across weekdays, weekends, and holidays, highlighting its role as a high-demand area. Camden, Southwark, Lambeth, and Tower Hamlets also consistently report high call volumes.
+
+The City of London, Harrow, and Kingston upon Thames report the fewest calls, suggesting these areas may require proportionally fewer resources.
+
+Certain boroughs, such as Tower Hamlets, show strong month-to-month increases, while others, like Southwark and Kensington & Chelsea, show declines, suggesting shifts in demand that should inform staffing and resource planning.
+
+## Response Efficiency
+
+Kensington & Chelsea has the fastest average first pump deployment (≈4.4 min), while Hillingdon is the slowest (≈6.2 min).
+
+Ealing and Hillingdon have the highest proportion of pumps sent 15 minutes or later after initial calls, whereas Westminster, despite being the busiest borough, maintains a relatively low delay rate (0.53%).
+
+Soho station demonstrates consistently high operational efficiency, dispatching the most first pumps (1,205) and second pumps, and frequently providing rapid assistance across boroughs.
+
+## Temporal and Property Insights
+
+Peak incident times occur around 18:00, with lowest activity at midnight. Some deviations, such as the spike on 23 February 2017 (Storm Doris), are linked to external events rather than systemic issues.
+
+Medium-sized residential buildings (4–9 storeys) and single-occupancy houses account for the highest incident volumes, while purpose-built offices and flats dominate specific central London boroughs. This suggests a need for tailored risk mitigation strategies depending on property type.
+
+## Strategic Implications
+
+Resource allocation should prioritize high-demand boroughs like Westminster, Lambeth, and Camden, particularly during weekends, holidays, and peak evening hours.
+
+Investment in response efficiency, particularly for slower boroughs and stations, can reduce overall response times and improve service reliability.
+
+Awareness campaigns and preventive measures targeting false alarms could significantly reduce overall call volume, freeing resources for genuine emergencies.
+
+Operational planning should account for variability due to seasonal or extreme events, ensuring flexibility and surge capacity.
+
+### Conclusion
+By aligning resource deployment with identified temporal, geographic, and property-specific patterns, emergency services can optimise response times, improve efficiency, and maintain service quality. Additionally, proactive measures to reduce false alarms and manage high-demand periods will enhance operational sustainability and public safety across London.
